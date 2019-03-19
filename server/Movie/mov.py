@@ -58,18 +58,20 @@ indices = indi
 #Recommendation
 def recommendations(idx, cosine_sim = cosine_sim):
     recommended_movies = []
+    reccs = []
     #idx = indices[indices == title].index[0]
     score_series = pd.Series(cosine_sim[idx]).sort_values(ascending = False)
     top_10 = list(score_series.iloc[1:11].index)
     for i in top_10:
         recommended_movies.append(list(df.index)[i])
-    #print(recommended_movies)
-    return recommended_movies
+    for i in recommended_movies:
+        reccs.append(indices[i])
+    return reccs
 
 
 #x = input('Enter the movie: ')
 #rm = recommendations(x)
 
-print("The recommended movies are: ")
+#print("The recommended movies are: ")
 #for i in rm:
 #    print(indices[i])

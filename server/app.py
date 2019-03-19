@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, url_for, flash, jsonify
-import json, pickle
+import json
 import pandas as pd
 import numpy as np
 from Movie.mov import recommendations
@@ -12,7 +12,7 @@ def hello():
 @app.route('/movie', methods=["POST"])
 def movie_id():
     if 'id' in request.args:
-        id = request.args['id']
+        id = int(request.args['id'])
     else:
         return "Error: No Id field provided."
     
@@ -22,5 +22,10 @@ def movie_id():
     #print(rec)
 
     return jsonify({'recommendations': l})
+
+'''
+@app.route('/music', methods=["POST"])
+def music_id():
+'''    
 
 app.run(debug=True)

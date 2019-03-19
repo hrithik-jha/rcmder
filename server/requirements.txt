@@ -1,0 +1,10 @@
+flask
+pandas
+rake_nltk
+numpy
+sklearn
+
+
+
+
+
