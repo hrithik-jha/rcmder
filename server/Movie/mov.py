@@ -55,11 +55,23 @@ cosine_sim = cosine_similarity(count_matrix, count_matrix)
 indi = pd.Series(df.Title)
 indices = indi
 
+'''
+pl = []
+cl = []
+
+for i in range(0, len(indices)):
+    cl = []
+    cl.append(i)
+    cl.append(indices[i])
+    l.append(cl)
+
+print(l)'''
+
 #Recommendation
-def recommendations(idx, cosine_sim = cosine_sim):
+def recommendations(title, cosine_sim = cosine_sim):
     recommended_movies = []
     reccs = []
-    #idx = indices[indices == title].index[0]
+    idx = indices[indices == title].index[0]
     score_series = pd.Series(cosine_sim[idx]).sort_values(ascending = False)
     top_10 = list(score_series.iloc[1:11].index)
     for i in top_10:
