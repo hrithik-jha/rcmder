@@ -29,8 +29,8 @@ def movie_id():
 @app.route('/music', methods=["POST"])
 def music_id():
     if 'name' in request.args and 'album in request.args':
-        name = request.args.get('name')
-        album = request.args.get('album')
+        name = str(request.args.get('name'))
+        album = str(request.args.get('album'))
     else:
         return "Error: No Id field provided."
     

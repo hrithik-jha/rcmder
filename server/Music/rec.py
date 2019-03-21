@@ -31,5 +31,8 @@ def get_recommendations(x, y, cosine_sim=cosine_sim):
     x = df[['song_name', 'artist_name', 'album_names']].iloc[song_indices]
     x = x.to_json(orient='records')
     print(x)
-    return df[['song_name', 'artist_name', 'album_names']].iloc[song_indices]
+    dl = df[['song_name', 'artist_name', 'album_names']].iloc[song_indices]
+    dl = dl.to_json()
+    return(dl)
 
+#get_recommendations('In The End', 'Linkin Park')
