@@ -15,6 +15,6 @@ A list of recommended movies is returned.
 ### Music
 The POST request should send the name of the song and the album it belongs to as arguments to get recommendations.
 ```
-
+localhost:[PORT]/movie?name=[NAME OF SONG]&album=[NAME OF ALBUM]
 ```
 A list of recommended songs is returned.
