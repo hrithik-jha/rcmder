@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RCMDER</title>
+</head>
+
+<body ng-app="mApp" ng-controller="mCtrl">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+
+    <div id="form">
+        <form>
+            <input type="radio" name="type" value="movie">
+            <input type="radio" name="type" value="music">
+            <input type="text" name="cont" placeholder="">
+            <input type="submit">
+        </form>
+    </div>
+
+    <div ng-repeat="deet in posts" id="posts">
+        <h2 id="title">{{deet.usern}}</h2>
+    </div>
+    <script>
+        var app = angular.module("mApp", []);
+        app.controller("mCtrl", function ($scope, $http) {
+            $http.get("http://localhost:8000/postsList")
+                .then(function (response) {
+                    $scope.posts = response.data;
+                    console.log($scope.posts);
+                });
+        })
+    </script>
+</body>
+
+</html>

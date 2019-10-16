@@ -5,10 +5,11 @@ import numpy as np
 from Movie.mov import recommendations
 from Music.rec import get_recommendations
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
+
 @app.route('/')
-def hello():
-    return "Sup"
+def home():
+    return app.send_static_file('index.html')
 
 @app.route('/movie', methods=["POST"])
 def movie_id():
