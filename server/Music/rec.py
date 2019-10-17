@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import random
 
 df=pd.read_csv('songs.csv')
 count_matrix = df.loc[:,'song_popularity':'audio_valence']
@@ -11,7 +12,8 @@ indices = pd.Series(df.index, index=df['id'])
 def get_recommendations(x, y, cosine_sim=cosine_sim):
     # Get the index of the song that matches the title
     n = x + y
-    idx = indices[n]
+    #idx = indices[n]
+    idx = int(random.randrange(1, 500))
 
     # Get the pairwsie similarity scores of all movies with that song
     sim_scores = list(enumerate(cosine_sim[idx]))
@@ -28,10 +30,10 @@ def get_recommendations(x, y, cosine_sim=cosine_sim):
     # df['link'].loc[song_indices]=df.loc[song_indices].apply(get_link,axis=1)
 
     # Return the top 10 most similar songs
-    x = df[['song_name', 'artist_name', 'album_names']].iloc[song_indices]
+    x = df[['song_name']].iloc[song_indices]
     x = x.to_json(orient='records')
     print(x)
-    dl = df[['song_name', 'artist_name', 'album_names']].iloc[song_indices]
+    dl = df[['song_name']].iloc[song_indices]
     dl = dl.to_json()
     return(dl)
 

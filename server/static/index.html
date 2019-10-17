@@ -13,24 +13,71 @@
 
     <div id="form">
         <form>
-            <input type="radio" name="type" value="movie">
-            <input type="radio" name="type" value="music">
-            <input type="text" name="cont" placeholder="">
-            <input type="submit">
+            <input type="radio" name="type" value="movie" ng-click="revealField(0)">
+            <input type="radio" name="type" value="music" ng-click="revealField(1)">
+            <input type="text" id="cont" placeholder="Enter the title name...">
+            <input type="text" id="album" placeholder="Enter the album name..." ng-show="show">
+            <input type="submit" ng-click="getIndex()">
         </form>
     </div>
 
-    <div ng-repeat="deet in posts" id="posts">
-        <h2 id="title">{{deet.usern}}</h2>
+    <div ng-repeat="deet in posts.recommendations" id="posts">
+        <h2 id="title">{{deet}}</h2>
+    </div>
+    <div ng-repeat="deet in songs" id="posts">
+        <h2 id="title">{{deet}}</h2>
     </div>
     <script>
         var app = angular.module("mApp", []);
         app.controller("mCtrl", function ($scope, $http) {
-            $http.get("http://localhost:8000/postsList")
-                .then(function (response) {
-                    $scope.posts = response.data;
-                    console.log($scope.posts);
-                });
+            $scope.show = false;
+            $scope.revealField = function(status) {
+                if(status == 0) {
+                    $scope.show = false;
+                }
+                else if(status == 1) {
+                    $scope.show = true;
+                }
+            }
+
+            $scope.makeCall = function(item, type) {
+                if(type == "movie") {
+                    var query = "http://localhost:5000/movie?title=" + item;
+                    $http.post(query)
+                    .then(function (response) {
+                        $scope.posts = response.data;
+                        console.log($scope.posts);
+                    });    
+                } 
+                else if(type == "music") {
+                    item = item.split('.');
+                    console.log(item);
+                    var query = "http://localhost:5000/music?name=" + item[0] + "&album=" + item[1];
+                    $http.post(query)
+                    .then(function (response) {
+                        deets = response.data;
+                        $scope.songs = deets['recommendations'];
+                        console.log($scope.songs['song_name'] + "\n" + $scope.songs[0]);
+                    });
+                }
+            }
+
+            $scope.getIndex = function() {
+                var sel = document.getElementsByName("type");
+                
+                if(sel[0].checked) {
+                    var text = document.getElementById("cont").value;
+                    console.log("movies called " + text);
+                    $scope.makeCall(text, "movie");
+                }
+                else if(sel[1].checked) {
+                    var text = document.getElementById("cont").value;
+                    var album = document.getElementById("album").value;
+                    deet = text + "." + album;
+                    console.log(text + " " + album);
+                    $scope.makeCall(deet, "music");
+                }
+            }
         })
     </script>
 </body>

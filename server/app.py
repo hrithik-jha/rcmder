@@ -29,7 +29,7 @@ def movie_id():
 
 @app.route('/music', methods=["POST"])
 def music_id():
-    if 'name' in request.args and 'album in request.args':
+    if 'name' in request.args and 'album' in request.args:
         name = str(request.args.get('name'))
         album = str(request.args.get('album'))
     else:
@@ -37,6 +37,7 @@ def music_id():
     
     #print(title)
     #rec = recommendations(id)
+    print(name, album)
     l = []
     l = get_recommendations(name, album)
     #print(rec)
