@@ -30,11 +30,9 @@ def get_recommendations(x, y, cosine_sim=cosine_sim):
     # df['link'].loc[song_indices]=df.loc[song_indices].apply(get_link,axis=1)
 
     # Return the top 10 most similar songs
-    x = df[['song_name']].iloc[song_indices]
+    x = df['song_name'].iloc[song_indices]
     x = x.to_json(orient='records')
     print(x)
-    dl = df[['song_name']].iloc[song_indices]
-    dl = dl.to_json()
-    return(dl)
+    return(x)
 
 #get_recommendations('In The End', 'Linkin Park')

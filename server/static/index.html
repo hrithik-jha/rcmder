@@ -5,6 +5,65 @@
     <title>RCMDER</title>
 </head>
 
+<style>
+    #btton {
+        width: 544px;
+        background-color: blue;
+        border-color: blue;
+        border-width: 0px;
+        color: white;
+        transition: 0.3s;
+    }
+
+    #btton:hover {
+        background-color: rgb(116, 116, 255);
+        border-color:  rgb(116, 116, 255);
+    }
+
+    #form {
+        background-color: pink;
+        border-style: solid;
+        border-color: pink;
+        border-radius: 12px;
+        margin: 0px;
+        text-align: center;
+        font-size: 24px;
+        font-family: Helvetica, sans-serif
+    }
+
+    #spec input {
+        border-radius: 8px;
+        border-color: white;
+        border-style: solid;
+        font-size: 20px;
+        width: 540px;
+        margin: 10px;
+        padding: 4px;
+    } 
+
+    #title {
+        display: inline-block;
+        width: 20%;
+        border-style: solid;
+        box-shadow: 0px 70px 40px -50px rgba(0, 0, 0, 0.2), 0px 3px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        float: left;
+        height: 65px;
+        font-family: Helvetica, sans-serif;
+        padding: 10px;
+        font-size: 20px;
+        border-width: 0px;
+        margin: 20px;
+        transition: 0.3s;
+    }
+
+    #title:hover {
+        margin-top: 15px;
+        color: pink;
+    }
+
+</style>
+
 <body ng-app="mApp" ng-controller="mCtrl">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -14,18 +73,21 @@
     <div id="form">
         <form>
             <input type="radio" name="type" value="movie" ng-click="revealField(0)">
+            Movie
             <input type="radio" name="type" value="music" ng-click="revealField(1)">
+            Music
+            <br><div id="spec">
             <input type="text" id="cont" placeholder="Enter the title name...">
             <input type="text" id="album" placeholder="Enter the album name..." ng-show="show">
-            <input type="submit" ng-click="getIndex()">
+            <br><input type="submit" ng-click="getIndex()" id="btton" style="border-color:blue; width: 551px;"></div>
         </form>
     </div>
 
     <div ng-repeat="deet in posts.recommendations" id="posts">
-        <h2 id="title">{{deet}}</h2>
+        <span id="title">{{deet}}</span>
     </div>
-    <div ng-repeat="deet in songs" id="posts">
-        <h2 id="title">{{deet}}</h2>
+    <div ng-repeat="deetz in songs" id="posts">
+        <span id="title">{{deetz}}</span>
     </div>
     <script>
         var app = angular.module("mApp", []);
@@ -51,13 +113,14 @@
                 } 
                 else if(type == "music") {
                     item = item.split('.');
-                    console.log(item);
+                    //console.log(item);
                     var query = "http://localhost:5000/music?name=" + item[0] + "&album=" + item[1];
                     $http.post(query)
                     .then(function (response) {
                         deets = response.data;
-                        $scope.songs = deets['recommendations'];
-                        console.log($scope.songs['song_name'] + "\n" + $scope.songs[0]);
+                        deets = deets.recommendations.replace(/\"/g, '');
+                        $scope.songs = deets.split(',');
+                        console.log($scope.songs + " " + $scope.songs.length);
                     });
                 }
             }
@@ -67,15 +130,18 @@
                 
                 if(sel[0].checked) {
                     var text = document.getElementById("cont").value;
-                    console.log("movies called " + text);
+                    //console.log("movies called " + text);
                     $scope.makeCall(text, "movie");
                 }
                 else if(sel[1].checked) {
                     var text = document.getElementById("cont").value;
                     var album = document.getElementById("album").value;
                     deet = text + "." + album;
-                    console.log(text + " " + album);
+                    //console.log(text + " " + album);
                     $scope.makeCall(deet, "music");
+                }
+                else {
+                    alert("Please select an option.");
                 }
             }
         })
