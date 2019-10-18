@@ -6,6 +6,19 @@
 </head>
 
 <style>
+    #header {
+        background-color: blue;
+        border-style: solid;
+        border-color: blue;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        font-size: 24px;
+        font-family: Helvetica, sans-serif
+    }
+
     #btton {
         width: 544px;
         background-color: blue;
@@ -70,15 +83,19 @@
         crossorigin="anonymous">
     </script>
 
+    <div id="header">
+        Entertainment Recommender System
+    </div>
+
     <div id="form">
         <form>
-            <input type="radio" name="type" value="movie" ng-click="revealField(0)">
+            <input type="radio" name="type" value="movie" ng-click="revealField(0)" >
             Movie
-            <input type="radio" name="type" value="music" ng-click="revealField(1)">
+            <input type="radio" name="type" value="music" ng-click="revealField(1)" >
             Music
             <br><div id="spec">
-            <input type="text" id="cont" placeholder="Enter the title name...">
-            <input type="text" id="album" placeholder="Enter the album name..." ng-show="show">
+            <input type="text" id="cont" placeholder="Enter the title name..." autocomplete="false">
+            <input type="text" id="album" placeholder="Enter the album name..." ng-show="show" autocomplete="false">
             <br><input type="submit" ng-click="getIndex()" id="btton" style="border-color:blue; width: 551px;"></div>
         </form>
     </div>
@@ -117,9 +134,8 @@
                     var query = "http://localhost:5000/music?name=" + item[0] + "&album=" + item[1];
                     $http.post(query)
                     .then(function (response) {
-                        deets = response.data;
-                        deets = deets.recommendations.replace(/\"/g, '');
-                        $scope.songs = deets.split(',');
+                        deets = response.data.recommendations;
+                        $scope.songs = deets.split('\",\"');
                         console.log($scope.songs + " " + $scope.songs.length);
                     });
                 }
